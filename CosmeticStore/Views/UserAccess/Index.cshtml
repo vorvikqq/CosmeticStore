@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model List<IdentityUser>
+
+@{
+    ViewData["Title"] = "User Access Management";
+}
+
+<h1>User Access Management</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>
+                    @* Посилання для перегляду користувача *@
+                    <a href="@Url.Action("Details", "UserAccess", new { userId = user.Id })" class="btn btn-info btn-sm">View</a>
+
+                    @* Якщо користувач заблокований, то показуємо кнопку для розблокування, якщо ні - для блокування *@
+                    @if (user.Id != null && ViewBag.SupportRepository.IsUserBlocked(user.Id))
+                    {
+                        <a href="@Url.Action("ToggleBlock", "UserAccess", new { userId = user.Id })" class="btn btn-danger btn-sm">Unblock</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("ToggleBlock", "UserAccess", new { userId = user.Id })" class="btn btn-warning btn-sm">Block</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

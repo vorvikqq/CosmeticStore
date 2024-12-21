@@ -1,0 +1,62 @@
+﻿@model ShoppingCart
+
+@{
+    ViewData["Title"] = "Your Cart";
+}
+
+<h1>Your Cart</h1>
+
+@if (Model == null || Model.CartDetail == null || !Model.CartDetail.Any())
+{
+    <p>Your cart is empty. <a asp-controller="Home" asp-action="Index">Add Goods</a></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CartDetail.FirstOrDefault().Good.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CartDetail.FirstOrDefault().Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CartDetail.FirstOrDefault().Good.Price)
+                </th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CartDetail)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Good.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Good.Price)$
+                    </td>
+                    <td>
+                        @(item.Quantity * item.Good.Price)$
+                    </td>
+                    <td>
+                        <a asp-action="RemoveItem" asp-route-goodId="@item.Good.Id" class="btn btn-danger btn-sm">Remove</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-between align-items-center">
+        <h3>Total: @(Model.CartDetail.Sum(item => item.Quantity * (item.Good?.Price ?? 0)).ToString("F2"))$</h3>
+        <a asp-action="Checkout" class="btn btn-success">Proceed to Checkout</a>
+    </div>
+    <div>
+        <a asp-controller="Home" asp-action="Index" class="m-2">Back</a>
+    </div>
+
+}

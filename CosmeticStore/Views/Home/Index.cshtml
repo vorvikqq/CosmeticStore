@@ -1,0 +1,84 @@
+﻿@model CosmeticStore.Models.CategoryGoodViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="my-4 d-flex justify-content-between flex-wrap">
+    <form class="row row-cols-lg-auto g-3 align-items-center m-2" asp-controller="Home" asp-action="Index" method="get">
+
+  <div class="col-12 d-flex align-items-center">
+    <label class="me-2" for="categoryId">Categories</label>
+    <select class="form-select" id="categoryId" asp-for="CategoryName"  asp-items="Model.Categories">
+      <option value="">All Categories</option>
+    </select>
+  </div>
+
+  <div class="col-12">
+    <div class="input-group">
+      <div class="input-group-text">Price</div>
+      <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Print max price" asp-for="MaxPrice" value="">
+    </div>
+  </div>
+
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Search</button>
+  </div>
+</form>
+    <h3 class="align-self-end">Total Goods: @ViewBag.TotalGoods</h3>
+<form class="row row-cols-lg-auto g-3 align-items-center m-2" asp-controller="Home" asp-action="SortBy" method="get">
+  <div class="col-12 d-flex align-items-center">
+    <label class="me-2" for="sortBy">SortBy</label>
+    <select class="form-select" id="sortBy" asp-for="SortBy">
+      <option value="price">Price</option>
+      <option value="date">Date</option>
+    </select>
+  </div>
+
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Search</button>
+  </div>
+</form>
+</div>
+<div class="w-100 d-flex justify-content-between flex-wrap">
+    @foreach (var good in Model.Goods!)
+    {
+        <div class="card mx-2 my-4" style="width: 16rem;">
+            <img src="https://res.cloudinary.com/dxq1kvo8c/image/upload/v1731799729/gfztqatck0bx4yy6xhve.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(modelItem => good.Name) </h5>
+                <p class="card-text">
+                    <b> Description: </b> @Html.DisplayFor(modelItem => good.Description) 
+                </p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">  <b>Price: </b> @Html.DisplayFor(modelItem => good.Price)  $</li>
+                <li class="list-group-item"><b>Production Date: </b> @Html.DisplayFor(modelItem => good.ProductionDate) </li>
+              </ul>
+              <div class="card-body  bottom-button-content">
+                <button type="button" id="myCartButton" onclick="Add(@good.Id)" class="btn btn-primary">Add to cart</button>
+              </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script>
+        let cartCountItem = document.getElementById("cartCountItem");
+        async function Add(goodId) {
+            try {
+                let response = await fetch(`/Cart/AddItem?goodId=${goodId}`);
+
+                if (response.status == 200) {
+                    let result = await response.json();
+                    console.log(result);
+
+                    cartCountItem.innerHTML = result;
+                }
+            } catch (error) {
+                console.dir(error);
+            }
+        }
+    </script>
+}

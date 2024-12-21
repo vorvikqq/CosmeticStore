@@ -1,0 +1,41 @@
+﻿@model CosmeticStore.Models.SupportModels.PerformanceViewModel
+
+<h2>Результати тестування продуктивності</h2>
+
+<h3>Малий обсяг даних (20 записів)</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Технологія</th>
+            <th>Час виконання (мс)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var result in Model.SmallDataResults)
+        {
+            <tr>
+                <td>@result.Technology</td>
+                <td>@result.Time</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Великий обсяг даних (100,000 записів)</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Технологія</th>
+            <th>Час виконання (мс)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var result in Model.LargeDataResults)
+        {
+            <tr>
+                <td>@result.Technology</td>
+                <td>@result.Time</td>
+            </tr>
+        }
+    </tbody>
+</table>

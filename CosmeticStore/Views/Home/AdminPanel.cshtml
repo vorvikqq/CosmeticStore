@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Admin Panel";
+}
+<h1>@ViewData["Title"]</h1>
+
+<ul class="navbar-nav flex-grow-1">
+    <li class="nav-item">
+        <a class="nav-link" asp-area="" asp-controller="Categories" asp-action="Index">Manage Categories</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " asp-controller="Goods" asp-action="Index">Manage Goods</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " asp-controller="Orders" asp-action="Index">Manage Orders</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " asp-controller="UserAccess" asp-action="Index">Manage Users</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " asp-controller="SoldItems" asp-action="Index">Sold Items</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " asp-controller="GoodTest" asp-action="PerformanceTest">Test Table</a>
+    </li>
+</ul>

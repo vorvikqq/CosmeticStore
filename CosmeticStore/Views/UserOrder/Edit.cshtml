@@ -1,0 +1,40 @@
+﻿@model CosmeticStore.Models.OrderModels.OrderEditModel
+@using CosmeticStore.Constants
+
+@{
+    ViewData["Title"] = "Edit Order";
+}
+
+<h2>Edit Order</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />  <!-- Сховуємо Id замовлення -->
+
+    <div class="py-2">
+        <label asp-for="Name">Name*</label>
+        <input type="text" class="form-control" asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="py-2">
+        <label asp-for="ShippingAddress">Shipping Address*</label>
+        <textarea class="form-control" asp-for="ShippingAddress" style="resize: none;" rows="2"></textarea>
+        <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+    </div>
+
+    <div class="py-2">
+        <label asp-for="PaymentMethod">Payment Method*</label>
+        <select asp-for="PaymentMethod" class="form-control">
+            <option value="">Select Payment Method</option>
+            @foreach (var method in Enum.GetValues(typeof(PaymentMethods)))
+            {
+                <option value="@method.ToString()">@method.ToString()</option>
+            }
+        </select>
+        <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+    </div>
+
+    <div class="py-2">
+        <button type="submit" class="btn btn-info">Update Order</button>
+    </div>
+</form>

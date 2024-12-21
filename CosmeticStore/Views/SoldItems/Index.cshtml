@@ -1,0 +1,69 @@
+﻿@model IEnumerable<CosmeticStore.Models.SoldItem>
+
+
+
+@{
+    ViewData["Title"] = "Sold Items";
+}
+
+<h1>Sold Items</h1>
+
+<form method="get" asp-controller="SoldItems" asp-action="Index">
+    <div class="form-group m-2">
+        <label for="startDate">Start Date</label>
+        <input type="date" name="startDate" id="startDate" class="form-control" value="@ViewData["StartDate"]" />
+    </div>
+    <div class="form-group m-2">
+        <label for="endDate">End Date</label>
+        <input type="date" name="endDate" id="endDate" class="form-control" value="@ViewData["EndDate"]" />
+    </div>
+    <button type="submit" class="btn btn-primary m-2">Filter</button>
+    <a asp-controller="SoldItems" asp-action="Index" class="btn btn-secondary m-2">Clear</a>
+</form>
+<form method="get" asp-controller="SoldItems" asp-action="ExportToExcel">
+    <input type="hidden" name="startDate" value="@ViewData["StartDate"]" />
+    <input type="hidden" name="endDate" value="@ViewData["EndDate"]" />
+    <button type="submit" class="btn btn-success">Export to Excel</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SoldDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                Total
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Good)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoldDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+                <td>@(item.Price * item.Quantity)</td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Good.Name)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

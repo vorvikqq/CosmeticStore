@@ -1,0 +1,59 @@
+﻿@model IEnumerable<CosmeticStore.Models.Order>
+
+@{
+    ViewData["Title"] = "User Orders";
+}
+
+<h1>User Orders</h1>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No orders available.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Order Date</th>
+                <th>Status</th>
+                <th>Shipping Address</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                // Додайте CSS-клас залежно від статусу
+                var rowClass = order.OrderStatus?.StatusName == CosmeticStore.Constants.OrderStatusNames.Cancelled.ToString()
+                ? "table-danger" // Червоний для скасованих замовлень
+                : order.OrderStatus?.StatusName == CosmeticStore.Constants.OrderStatusNames.Delivered.ToString()
+                ? "table-success" // Зелений для доставлених замовлень
+                : "";
+
+                <tr class="@rowClass">
+                    <td>@order.Name</td>
+                    <td>@order.OrderDate.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@order.OrderStatus?.StatusName</td>
+                    <td>@order.ShippingAddress</td>
+                    <td>
+                        @if (order.OrderStatus?.StatusName != CosmeticStore.Constants.OrderStatusNames.Cancelled.ToString()
+                       && order.OrderStatus?.StatusName != CosmeticStore.Constants.OrderStatusNames.Delivered.ToString())
+                        {
+                            <a asp-action="CancelOrder" asp-route-orderId="@order.Id" class="btn btn-danger btn-sm">Cancel</a>
+                            <a asp-action="ApproveOrder" asp-route-orderId="@order.Id" class="btn btn-success btn-sm">Approve</a>
+                            @if (DateTime.Now - order.OrderDate < TimeSpan.FromHours(1))
+                            {
+                            <a asp-action="Edit" asp-route-orderId="@order.Id" class="btn btn-success btn-sm">Edit</a>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<div>
+    <a asp-controller="Home" asp-action="Index" class="m-2">Back</a>
+</div>

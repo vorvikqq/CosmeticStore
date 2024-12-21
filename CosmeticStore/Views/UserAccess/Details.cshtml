@@ -1,0 +1,27 @@
+﻿@model CosmeticStore.Models.SupportModels.UserDetailsViewModel
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<h1>User Details</h1>
+
+<div>
+    <h4>Name: @Model.User.UserName</h4>
+    <p>Email: @Model.User.Email</p>
+    <p>Blocked: @(Model.IsBlocked ? "Yes" : "No")</p>
+
+    @* Якщо користувач не заблокований, надаємо кнопку для блокування *@
+    @if (!Model.IsBlocked)
+    {
+        <a href="@Url.Action("ToggleBlock", "UserAccess", new { userId = Model.User.Id })" class="btn btn-warning btn-sm">Block</a>
+    }
+    else
+    {
+        <a href="@Url.Action("ToggleBlock", "UserAccess", new { userId = Model.User.Id })" class="btn btn-danger btn-sm">Unblock</a>
+    }
+</div>
+
+<div>
+    <a href="@Url.Action("Index", "UserAccess")" class="btn btn-secondary">Back to List</a>
+</div>
